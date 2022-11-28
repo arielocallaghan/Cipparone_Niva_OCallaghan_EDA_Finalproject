@@ -22,7 +22,7 @@ library(readxl)
 ```
 
 ```{r Downloading Data}
-
+#inital uploading of all the coal data for each distinct year -- this could not be expedited with data stripping because there were separate links to downloaded spreadsheets instead of links to another website
 coal1983 <- read.csv("RawData/coalpublic1983.csv", stringsAsFactors = TRUE)
 coal1984 <- read.csv("RawData/coalpublic1984.csv", stringsAsFactors = TRUE)
 coal1985 <- read.csv("RawData/coalpublic1985.csv", stringsAsFactors = TRUE)
@@ -62,9 +62,8 @@ coal2018 <- read.csv("RawData/coalpublic2018.csv", stringsAsFactors = TRUE)
 coal2019 <- read.csv("RawData/coalpublic2019.csv", stringsAsFactors = TRUE)
 coal2020 <- read.csv("RawData/coalpublic2020.csv", stringsAsFactors = TRUE)
 coal2021 <- read.csv("RawData/coalpublic2021.csv", stringsAsFactors = TRUE)
-WaterQuality <- read.csv("RawData/water_quality_data.csv", stringsAsFactors = TRUE)
-WaterQualitySites <- read.csv("RawData/water_quality_location_data.csv", stringsAsFactors = TRUE)
 
+#inconsistencies in the form of different columns needed to be resolved
 coal1996$MSHA.ID <- as.factor(coal1996$MSHA.ID)
 coal1997$MSHA.ID <- as.factor(coal1997$MSHA.ID)
 coal1998$MSHA.ID <- as.factor(coal1998$MSHA.ID)
@@ -113,7 +112,7 @@ coal2019$Average.Employees <- as.factor(coal2019$Average.Employees)
 coal2020$Average.Employees <- as.factor(coal2020$Average.Employees)
 coal2021$Average.Employees <- as.factor(coal2021$Average.Employees)
 
-
+#All the columns are then merged together into a single dataset
 AllCoal <- full_join(coal1983, coal1984)
 AllCoal <- full_join(AllCoal, coal1985)
 AllCoal <- full_join(AllCoal, coal1986)
@@ -153,6 +152,7 @@ AllCoal <- full_join(AllCoal, coal2019)
 AllCoal <- full_join(AllCoal, coal2020)
 AllCoal <- full_join(AllCoal, coal2021)
 
+#a separate dataset just from 2010 on can be used to compare with other datasets that are only available from 2010 on
 Coal2010on <- full_join(coal2010, coal2011)
 Coal2010on <- full_join(Coal2010on, coal2012)
 Coal2010on <- full_join(Coal2010on, coal2013)
@@ -165,6 +165,7 @@ Coal2010on <- full_join(Coal2010on, coal2019)
 Coal2010on <- full_join(Coal2010on, coal2020)
 Coal2010on <- full_join(Coal2010on, coal2021)
 
+#Filtering the data sets for only the Pennsylvania data -- the focus of our investigation
 AllCoal <- filter(AllCoal, Mine.State %in% c("Pennsylvania (Bituminous)", "Pennsylvania (Anthracite)"))
 
 Coal2010on <- filter(Coal2010on, Mine.State %in% c("Pennsylvania (Bituminous)", "Pennsylvania (Anthracite)"))
@@ -172,3 +173,11 @@ Coal2010on <- filter(Coal2010on, Mine.State %in% c("Pennsylvania (Bituminous)", 
 ```
 
 
+```{r Installing and loading packages}
+
+WaterQuality <- read.csv("RawData/water_quality_data.csv", stringsAsFactors = TRUE)
+WaterQualitySites <- read.csv("RawData/water_quality_location_data.csv", stringsAsFactors = TRUE)
+
+FullWaterQuality <- left_join(WaterQuality, WaterQualitySites, by = "MonitoringLocationIdentifier")
+
+```
