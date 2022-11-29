@@ -175,9 +175,17 @@ Coal2010on <- filter(Coal2010on, Mine.State %in% c("Pennsylvania (Bituminous)", 
 
 ```{r Installing and loading packages}
 
+#import water quality data sets
 WaterQuality <- read.csv("RawData/water_quality_data.csv", stringsAsFactors = TRUE)
 WaterQualitySites <- read.csv("RawData/water_quality_location_data.csv", stringsAsFactors = TRUE)
 
-FullWaterQuality <- left_join(WaterQuality, WaterQualitySites, by = "MonitoringLocationIdentifier")
+#merge the site data with the sampling results
+WaterQuality <- left_join(WaterQuality, WaterQualitySites, by = "MonitoringLocationIdentifier")
+
+#filter for pennsylvania
+WaterQuality <- filter(WaterQuality, StateCode %in% c(42))
+
+WaterQualitySlim <- select(WaterQuality$ActivityStartDate, WaterQuality$MonitoringLocationName.y, WaterQuality$LatitudeMeasure, WaterQuality$LongitudeMeasure, WaterQuality$CountyCode, WaterQuality$CharacteristicName, WaterQuality$ResultSampleFractionText, WaterQuality$ResultMeasureValue, WaterQuality$ResultMeasure.MeasureUnitCode, WaterQuality$ResultCommentText)
+
 
 ```

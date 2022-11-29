@@ -1,5 +1,0 @@
-"0","AllCoal <- mutate(AllCoal$Mine.State %in% c(""Pennsylvania (Bituminous)"", ""Pennsylvania (Anthracite)""))
-"
-"2","Error in UseMethod(""mutate"") : 
-  no applicable method for 'mutate' applied to an object of class ""logical""
-"
